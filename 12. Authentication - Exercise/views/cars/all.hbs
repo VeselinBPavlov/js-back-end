@@ -1,0 +1,33 @@
+<h1>Cars</h1>
+<div class="cars-container">
+    {{#each cars}}
+        <div class="car-container">           
+            <section>
+                <img src="{{imageUrl}}" alt='car-image' />                                          
+            </section>
+            <section class="info"> 
+                <div class="info-cont">              
+                <strong>{{make}} {{model}}</strong>
+                <span class="rented">rented: 
+                    <strong>{{timesRented}}</strong>
+                </span>
+                 
+                {{#if ../currentUser.isAdmin}}
+                <div class="buttons">
+                    <button><a href="/cars/edit/{{_id}}">Edit</a></button>
+                    <button><a href="/cars/delete/{{_id}}">Delete</a></button>
+                </div>
+                {{/if}}
+                {{#if ../currentUser}}
+                    <form action="/cars/rent/{{this._id}}" method="post">
+                        <input type="submit" value="Rent">
+                    </form>
+                {{/if}}
+                </div>
+            </section>            
+
+        </div>
+    {{else}}
+        <i>No cars available.</i>
+    {{/each}}
+</div>
