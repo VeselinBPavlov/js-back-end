@@ -9,9 +9,4 @@
 06. View Engines
 07. Authentication
 
-## Status:
-Uncompleted
-
-## Certificate:
-none
 
