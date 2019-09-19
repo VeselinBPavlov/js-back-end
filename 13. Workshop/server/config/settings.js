@@ -6,7 +6,7 @@ module.exports = {
   development: {
     rootPath: rootPath,
     db: 'mongodb://localhost:27017/generictemplate',
-    port: 8080
+    port: 5678
   },
   staging: {
   },

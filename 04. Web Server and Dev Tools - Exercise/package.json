@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "homework",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "author": "Cvetan Petkov",
   "license": "MIT",
   "dependencies": {

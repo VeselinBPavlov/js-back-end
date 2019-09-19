@@ -7,5 +7,8 @@
     "start": "node index.js"
   },
   "author": "VP",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^5.7.1"
+  }
 }
