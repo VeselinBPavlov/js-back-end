@@ -1,4 +1,4 @@
-# Course: ExpressJS Fundamentals
+# Course: JS-Back-end
 
 ## Topics:
 01. Introduction to Node.js
