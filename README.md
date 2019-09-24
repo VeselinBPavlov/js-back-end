@@ -1,12 +1,16 @@
-# Course: ExpressJS Fundamentals
+<a href="https://softuni.bg/trainings/courses" rel="Courses">  ![SoftUni logo][logo] <a/>
+
+[logo]: http://innovationstarterbox.bg/wp-content/uploads/2016/05/Softuni_logo_trasparent.png "Logo Title Text 2"
+
+---
+
+# Course: JS Back-End
 
 ## Topics:
-01. Introduction to Node.js
-02. HTTP and Node.js
-03. Web Server and Dev Tools
-04. Files and MongoDB
-05. Introduction to Express.js
-06. View Engines
-07. Authentication
-
-
+01. Intro to Node.js
+02. Node.js Streams and Utilities
+03. Express.js and Templating
+04. Mongodb and Mongoose
+05. Session and Authentication
+06. Validation and Error Handling
+07. REST API
