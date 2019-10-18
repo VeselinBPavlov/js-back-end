@@ -1,44 +1,35 @@
 const encryption = require('../util/encryption');
-const User = require('mongoose').model('User');
+const errorService = require('../services/error-service');
+const userService = require('../services/user-service');
 
 module.exports = {
     registerGet: (req, res) => {
         res.render('users/register');
     },
 
-    registerPost: async (req, res) => {
-        const reqUser = req.body;
-        if (reqUser.password !== reqUser.repeatPassword) {
+    registerPost: (req, res) => {
+        const { username, password, repeatPassword} = req.body;
+        if (password !== repeatPassword) {
             res.locals.globalError = 'Passwords must match!';
             res.render('users/register');
             return;
         }
         
         const salt = encryption.generateSalt();
-        const hashedPass =
-            encryption.generateHashedPassword(salt, reqUser.password);
-        try {
-            const user = await User.create({
-                username: reqUser.username,
-                hashedPass,
-                salt,
-                firstName: reqUser.firstName,
-                lastName: reqUser.lastName,
-                roles: []
-            });
-            req.logIn(user, (err, user) => {
-                if (err) {
-                    res.locals.globalError = err;
-                    res.render('users/register', user);
-                } else {
-                    res.redirect('/');
-                }
-            });
-        } catch (e) {
-            console.log(e);
-            res.locals.globalError = e;
-            res.render('users/register');
-        }
+        const hashedPass = encryption.generateHashedPassword(salt, password);
+        
+        userService
+            .create(username, hashedPass, salt)
+            .then(user => {
+                req.logIn(user, (err, user) => {
+                    if (err) {
+                        res.locals.globalError = err;
+                        res.render('users/register', user);
+                    } else {
+                        res.redirect('/');
+                    }
+                });
+            }).catch((err) => errorService.handleError(err, '/'));  
     },
 
     logout: (req, res) => {
@@ -50,33 +41,30 @@ module.exports = {
         res.render('users/login');
     },
     
-    loginPost: async (req, res) => {
-        const reqUser = req.body;
-        try {
-            const user = await User.findOne({ username: reqUser.username });
-            if (!user) {
-                errorHandler('Invalid user data');
-                return;
-            }
-            if (!user.authenticate(reqUser.password)) {
-                errorHandler('Invalid user data');
-                return;
-            }
-            req.logIn(user, (err, user) => {
-                if (err) {
-                    errorHandler(err);
-                } else {
-                    res.redirect('/');
-                }
-            });
-        } catch (e) {
-            errorHandler(e);
-        }
+    loginPost: (req, res) => {
+        const { username, password } = req.body;
 
-        function errorHandler(e) {
-            console.log(e);
-            res.locals.globalError = e;
-            res.render('users/login');
-        }
+        userService
+            .get(username)
+            .then(user => {
+                if (!user || !user.authenticate(password)) {
+                    errorHandler('Invalid user data');
+                    return;
+                }
+                req.logIn(user, (err, user) => {
+                    if (err) {
+                        errorHandler(err);
+                    } else {
+                        res.redirect('/');
+                    }
+                });
+            }).catch((err) => errorService.handleError(err, 'users/login'));  
+
+            function errorHandler(e) {
+                console.log(e);
+                res.locals.globalError = e;
+                res.render('users/login');
+            }
     }
+    
 };
