@@ -15,16 +15,22 @@
         <li><a href="/"><img class="logo" src="/images/logo.png"></a></li>
         <li><a href="/">Browse</a></li>
         <li><a href="/about">About</a></li>
+        {{#if currentUser}} 
         <li><a href="/add-cube">Add a Cube</a></li>
-        <li><a href="/add-accessory">Add Accessory</a></li>            
-        {{#if currentUser}}            
-            <li><a href="/logout">[Logout]</a></li>
+        <li><a href="/add-accessory">Add Accessory</a></li>                
+        <li><a href="/logout">[Logout]</a></li>
         {{else}}
             <li><a href="/login">Login</a></li>
             <li><a href="/register">Register</a></li>
         {{/if}}
       </ul>
     </header>
+          {{#if globalError}}
+              <h3>{{globalError}}</h3>
+          {{/if}}
+          {{#if success}}
+          <h3>{{success}}</h3>
+          {{/if}}
         {{{body}}}
     </div>
   <footer>@Cubicle: Exercise for Express.js and Handlebars</footer>

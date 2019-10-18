@@ -1,19 +1,17 @@
-const Cube = require('mongoose').model('Cube');
+const cubeService = require('../services/cube-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     index: (req, res) => {
-      Cube
-        .find()
-        .then(cubes => {
-          res.render('home/index', { cubes })
-        }).catch((err) => {
-          let message = errorHandler.handleMongooseError(err)
-          res.locals.globalError = message
-          res.render('/')
-        });
+      const { from, to, search } = req.query;
+      const user = req.user;
+      cubeService
+        .getAll(from, to, search)
+        .then(cubes => res.render('home/index', { cubes, search, from, to, user }))
+        .catch((err) => errorService.handleError(err, '/'));
     },
 
     about: (req, res) => {
-      res.render('home/about')
+      res.render('home/about');
     }
 }

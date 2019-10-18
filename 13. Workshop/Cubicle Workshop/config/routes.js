@@ -11,17 +11,19 @@ module.exports = app => {
     app.get('/login', restrictedPages.isAnonymous, controllers.user.loginGet);
     app.post('/login', restrictedPages.isAnonymous, controllers.user.loginPost);
 
-    app.get('/add-cube', restrictedPages.isAnonymous, controllers.cube.addCube);
-    app.post('/add-cube', restrictedPages.isAnonymous, controllers.cube.addCubePost);
-    app.get('/details/:id', restrictedPages.isAnonymous, controllers.cube.details);
-    app.get('/attach/:id', restrictedPages.isAnonymous, controllers.cube.attachAccessory);
-    app.post('/attach/:id', restrictedPages.isAnonymous, controllers.cube.attachAccessoryPost);
+    app.get('/add-cube', restrictedPages.isAuthed, controllers.cube.addCube);
+    app.post('/add-cube', restrictedPages.isAuthed, controllers.cube.addCubePost);
+    app.get('/details/:id', controllers.cube.details);
 
-    app.get('/add-accessory', restrictedPages.isAnonymous, controllers.accessory.addAccessory);
-    app.post('/add-accessory', restrictedPages.isAnonymous, controllers.accessory.addAccessoryPost);
+    app.get('/edit/:id', restrictedPages.hasRole('Admin'), controllers.cube.edit);
+    app.post('/edit/:id', restrictedPages.hasRole('Admin'), controllers.cube.editPost);
+    app.get('/delete/:id', restrictedPages.hasRole('Admin'), controllers.cube.delete);
+    app.post('/delete/:id', restrictedPages.hasRole('Admin'), controllers.cube.deletePost);
 
-
-
+    app.get('/add-accessory', restrictedPages.isAuthed, controllers.accessory.addAccessory);
+    app.post('/add-accessory', restrictedPages.isAuthed, controllers.accessory.addAccessoryPost);
+    app.get('/attach/:id', restrictedPages.isAuthed, controllers.accessory.attachAccessory);
+    app.post('/attach/:id', restrictedPages.isAuthed, controllers.accessory.attachAccessoryPost);
 
     app.all('*', (req, res) => {
         res.status(404);

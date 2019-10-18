@@ -1,6 +1,5 @@
-const Cube = require('mongoose').model('Cube');
-const Accessory = require('mongoose').model('Accessory');
-const errorHandler = require('../util/error-handler');
+const cubeService = require('../services/cube-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     addCube: (req, res) => {
@@ -8,61 +7,48 @@ module.exports = {
     },
 
     addCubePost: (req, res) => {
-        let cube = req.body;
-
-        Cube
-            .create({
-                name: cube.name,
-                description: cube.description,
-                imageUrl: cube.imageUrl,
-                difficultyLevel: cube.difficultyLevel
-            }).then(cube => {
-                res.redirect('/');
-            }).catch((err) => {
-                let message = errorHandler.handleMongooseError(err);
-                res.locals.globalError = message;
-                res.render('cubes/add-cube', cubeReq);
-            });        
+        cubeService
+            .create(req.body, req.user)
+            .then(cube => res.redirect('/'))
+            .catch((err) => errorService.handleError(err, 'cubes/add-cube'));        
     },
 
     details: (req, res) => {
-        let cubeId = req.params.id;
+        cubeService
+            .getWithAccessories(req.params.id)
+            .then(cube => res.render('cubes/details', { cube }))
+            .catch((err) => errorService.handleError(err, '/'));  
+    },
 
-        Cube
-            .findById(cubeId)
-            .populate('accessories')
+    edit: (req, res) => {
+        cubeService
+            .get(req.params.id)
             .then(cube => {
-               res.render('cubes/details', { cube })
-            }).catch((err) => {
-                let message = errorHandler.handleMongooseError(err);
-                res.locals.globalError = message;
-                res.render('/', cubeReq);
-            });  
-    },
-    
-    attachAccessory: (req, res, next) => {
-        let cubeId = req.params.id;
-
-        Cube
-            .findById(cubeId)
-            .then(cube => 
-                Promise.all([cube, Accessory
-                    .find()
-                    .then(accessories => accessories.filter(a => a.cubes.includes(cubeId) === false))])
-            ).then(([cube, filterAccessories]) => {
-                res.render('accessories/attach', { cube, accessories: filterAccessories.length > 0 ? filterAccessories : null })
-            }).catch(next);  
+                const options = cubeService.optionsRender(cube.difficultyLevel);
+                res.render('cubes/edit', { cube, options }); 
+            }).catch((err) => errorService.handleError(err, '/'));  
     },
 
-    attachAccessoryPost: (req, res, next) => {
-        let cubeId = req.params.id;
-        let accessoryId = req.body.accessoryId;
+    editPost: (req, res) => {
+        cubeService
+            .update(req.params.id, req.body)        
+            .then(cube => res.redirect('/'))
+            .catch((err) => errorService.handleError(err, '/'));  
+    },
 
-        Promise.all([
-            Cube.update({ _id: cubeId }, { $push: { accessories: accessoryId } }),
-            Accessory.update({ _id: accessoryId }, { $push: { cubes: cubeId } })
-        ]).then(() => {
-            res.redirect('/');
-        }).catch(next);
+    delete: (req, res) => {
+        cubeService
+            .get(req.params.id)
+            .then(cube => {
+                const options = cubeService.optionsRender(cube.difficultyLevel);
+                res.render('cubes/delete', { cube, options });
+            }).catch((err) => errorService.handleError(err, '/'));  
+    },
+
+    deletePost: (req, res) => {      
+        cubeService
+            .delete(req.params.id)
+            .then(() => { res.redirect('/'); })
+            .catch((err) => errorService.handleError(err, '/'));  
     }
 }
