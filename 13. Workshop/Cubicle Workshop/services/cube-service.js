@@ -20,10 +20,7 @@ module.exports = {
               query = { ...query, difficultyLevel: { $lte: +to } };
             }
             if (from) {
-              query = {
-                ...query,
-                difficultyLevel: { ...query.difficultyLevel, $gte: +from }
-              };
+              query = { ...query, difficultyLevel: { ...query.difficultyLevel, $gte: +from } };
             }
 
             Cube

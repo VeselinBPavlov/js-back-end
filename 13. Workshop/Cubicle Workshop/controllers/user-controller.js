@@ -5,6 +5,7 @@ module.exports = {
     registerGet: (req, res) => {
         res.render('users/register');
     },
+
     registerPost: async (req, res) => {
         const reqUser = req.body;
         if (reqUser.password !== reqUser.repeatPassword) {
@@ -39,13 +40,16 @@ module.exports = {
             res.render('users/register');
         }
     },
+
     logout: (req, res) => {
         req.logout();
         res.redirect('/');
     },
+
     loginGet: (req, res) => {
         res.render('users/login');
     },
+    
     loginPost: async (req, res) => {
         const reqUser = req.body;
         try {
