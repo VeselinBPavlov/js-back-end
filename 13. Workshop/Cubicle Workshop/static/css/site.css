@@ -251,12 +251,37 @@ h2{
     font-style: italic;
 }
 
+#notifications {
+    margin: 0 auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+    width: 50%;
+    padding: 0.5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    background: rgb(231, 118, 118);
+    color: white;
+    border-radius: 5px;
+    text-decoration: underline;
+}
+
 footer {
     background: #607588;
     padding: 1em;
     text-align: center;
     color: white;
     font-size: 20px;
+}
+
+@media all and (max-width: 1380px) {
+    button, main a.btn  {
+        width: 85%;
+    }
+
+    .details a.btn {
+        width: 25%;
+    }
 }
 
 /*Animations & Transitions

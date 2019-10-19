@@ -37,5 +37,10 @@ module.exports = app => {
 
     app.use(express.static('./static'));
 
+    app.use(function (err, req, res, next) {
+        console.error(err);
+        res.render('500.hbs', { errorMessage: err.message });
+    });
+
     console.log('Express ready!')
 };

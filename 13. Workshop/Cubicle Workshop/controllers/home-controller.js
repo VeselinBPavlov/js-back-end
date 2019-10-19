@@ -1,7 +1,7 @@
 const cubeService = require('../services/cube-service');
 const errorService = require('../services/error-service');
 
-module.exports = {
+module.exports = {    
     index: (req, res) => {
       const { from, to, search } = req.query;
       const user = req.user;
