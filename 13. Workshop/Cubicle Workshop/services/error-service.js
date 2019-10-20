@@ -1,12 +1,12 @@
 module.exports = {
-    handleError: (err, page) => {
+    handleError: (res, err, page) => {
         let firstKey = Object.keys(err.errors)[0];
         let message = err.errors[firstKey].message;
         res.locals.globalError = message;
         res.render(page);
     },
 
-    loginError: (message) => {
+    credentialError: (res, message) => {
         res.locals.globalError = message;
         res.render('users/login');
         return;

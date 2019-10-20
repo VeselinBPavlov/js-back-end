@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Cubicle</title>
-  <link href="/css/site.css" type="text/css" rel="stylesheet">
+  <link href="/css/site.css" type="text/css" rel="stylesheet">  
   <link rel='icon' type='image/x-icon' href='/images/favicon.png' />
 </head>
 
@@ -26,17 +26,18 @@
       </ul>
     </header>
         <div id="notifications">
-            <p id="notification-message"></p>
-        </div>
-          {{#if globalError}}
+            <p id="notification-message">
+              {{#if globalError}}
               <h3>{{globalError}}</h3>
-          {{/if}}
-          {{#if success}}
-          <h3>{{success}}</h3>
-          {{/if}}
+              {{/if}}
+              {{#if success}}
+              <h3>{{success}}</h3>
+              {{/if}}
+            </p>
+        </div>
+          
         {{{body}}}
     </div>
   <footer>@Cubicle: Exercise for Express.js and Handlebars</footer>
 </body>
-
 </html>

@@ -3,7 +3,20 @@ const Schema = mongoose.Schema;
 const encryption = require('../util/encryption');
 
 const userSchema = new mongoose.Schema({
-    username: { type: Schema.Types.String, required: true, unique: true },
+    username: { 
+        type: Schema.Types.String, 
+        required: true, 
+        unique: true,
+        minlength: [5, 'Username should be at least 5 characters long!'],
+        validate: [ 
+            {
+                validator: (v) => {
+                    return /[A-Za-z0-9]+/.test(v);
+                },
+                message: props => `${props.value} is not a valid username!`
+            }            
+        ]
+    },
     hashedPass: { type: Schema.Types.String, required: true },
     salt: { type: Schema.Types.String, required: true },
     roles: [{ type: Schema.Types.String }],

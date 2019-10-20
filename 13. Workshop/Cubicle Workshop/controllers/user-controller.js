@@ -35,8 +35,7 @@ module.exports = {
                 .then(user => {
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            res.locals.globalError = err;
-                            res.render('users/register', user);
+                            errorService.credentialError(res, err);
                         } else {
                             res.redirect('/');
                         }
@@ -51,23 +50,17 @@ module.exports = {
                 .get(username)
                 .then(user => {
                     if (!user || !user.authenticate(password)) {
-                        errorHandler('Invalid user data');
+                        errorService.credentialError(res, 'Invalid user data');
                         return;
                     }
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            errorHandler(err);
+                            errorService.credentialError(res, err);
                         } else {
                             res.redirect('/');
                         }
                     });
-                }).catch((err) => errorService.handleError(err, 'users/login'));  
-    
-                function errorHandler(e) {
-                    console.log(e);
-                    res.locals.globalError = e;
-                    res.render('users/login');
-                }
+                }).catch((err) => errorService.handleError(res, err, 'users/login'));  
         }
     }    
 };
