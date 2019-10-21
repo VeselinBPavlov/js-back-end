@@ -15,8 +15,9 @@ module.exports = app => {
     app.get('/edit/:id', auth.hasRole("Admin"), controllers.course.get.edit);
     app.post('/edit/:id', auth.hasRole("Admin"), controllers.course.post.edit);
 
-    app.get('/panel/:id', auth.hasRole("Admin"), controllers.lecture.get.panel);
-    
+    app.get('/add-lecture/:id', auth.hasRole("Admin"), controllers.lecture.get.panel);
+    app.post('/add-lecture/:id', auth.hasRole("Admin"), controllers.lecture.post.panel); 
+    app.get('/delete/:id', auth.hasRole("Admin"), controllers.lecture.get.delete);   
 
     app.all('*', (req, res) => {
         res.status(404);

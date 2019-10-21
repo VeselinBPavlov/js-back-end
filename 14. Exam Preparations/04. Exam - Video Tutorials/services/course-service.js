@@ -41,6 +41,16 @@ module.exports = {
         });
     },
 
+    getByIdWithLectures: (id) => {
+        return new Promise((resolve, reject) => {
+            Course
+            .findById(id)
+            .populate('lectures')
+            .then(course => resolve(course))
+            .catch(err => reject(err));
+        });
+    },
+
     create: (body) => {
         return new Promise((resolve, reject) => {
             let { title, description, imageUrl, isPublic } = body;
