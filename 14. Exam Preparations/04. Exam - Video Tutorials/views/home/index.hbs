@@ -39,9 +39,9 @@
         {{#if currentUser}}   
         <h1 class="text-center">Courses</h1>
 
-        <form class="search">
+        <form class="search" style="text-align: center;" action="" method="">
             <label>Search: </label>
-            <input type="text">
+            <input type="text" name="search">
             <input type="submit" value="Search">
         </form>
 
@@ -57,7 +57,7 @@
                             <p class="card-text">{{description}}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="/details"><button type="button" class="btn btn-info">Details</button></a>
+                            <a href="/details/{{_id}}"><button type="button" class="btn btn-info">Details</button></a>
                         </div>
                     </div>
                     {{/each}}                    

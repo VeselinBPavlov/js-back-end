@@ -16,17 +16,23 @@ module.exports = {
             Course
             .find( { isPublic: true } )
             .populate('users')
-            .sort( { users: 1 } )
+            .sort( { users: -1 } )
             .limit(3)
             .then(courses => resolve(courses))
             .catch(err => reject(err));
         });
     },
 
-    getAllPublic: () => {
-        return new Promise((resolve, reject) => {
+    getAllPublic: (search) => {
+        return new Promise((resolve, reject) => {            
+            let query = {};
+            if (search) {
+              query = { title: { $regex: search } };
+            }
+
+            query = { ...query, isPublic: true };
             Course
-            .find( { isPublic: true } )
+            .find(query)
             .then(courses => resolve(courses))
             .catch(err => reject(err));
         });
@@ -87,5 +93,14 @@ module.exports = {
             .then(course => resolve(course))
             .catch(err => reject(err));
         });     
-    } 
+    },
+
+    enroll: (courseId, userId) => {
+        return new Promise((resolve, reject) => {
+            Course
+            .updateOne({ _id: courseId }, { $push: { users: userId } })
+            .then(course => resolve(course))
+            .catch(err => reject(err));
+        });
+    }
 }

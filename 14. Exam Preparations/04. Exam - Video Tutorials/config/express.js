@@ -7,6 +7,9 @@ const session = require('express-session');
 const passport = require('passport');
 
 hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+hbs.registerHelper('isEnrolled', function(course, userId) {
+    return course.users.includes(userId);
+});
 module.exports = app => {
     app.engine('.hbs', handlebars({
         defaultLayout: 'main',
@@ -27,6 +30,7 @@ module.exports = app => {
         if (req.user) {
             res.locals.currentUser = {
                 username: req.user.username,
+                id: req.user.id,
                 isAdmin: req.user.roles.indexOf('Admin') > -1
             }  
         }

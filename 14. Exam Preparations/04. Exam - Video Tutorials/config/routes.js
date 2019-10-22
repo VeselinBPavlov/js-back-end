@@ -17,7 +17,12 @@ module.exports = app => {
 
     app.get('/add-lecture/:id', auth.hasRole("Admin"), controllers.lecture.get.panel);
     app.post('/add-lecture/:id', auth.hasRole("Admin"), controllers.lecture.post.panel); 
-    app.get('/delete/:id', auth.hasRole("Admin"), controllers.lecture.get.delete);   
+    app.get('/delete/:courseId/:lectureId', auth.hasRole("Admin"), controllers.lecture.get.delete);
+    app.get('/play/:id', auth.isAuthed, controllers.lecture.get.play);
+    
+    app.get('/details/:id', auth.isAuthed, controllers.course.get.details);
+    app.post('/enroll/:courseId/:userId', auth.isAuthed, controllers.course.post.enroll);
+
 
     app.all('*', (req, res) => {
         res.status(404);

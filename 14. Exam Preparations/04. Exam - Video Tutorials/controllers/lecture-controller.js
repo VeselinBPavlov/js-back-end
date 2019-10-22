@@ -10,11 +10,21 @@ module.exports = {
                 .catch(err => console.log(err));
         },
 
-        delete: (req, res) => {      
+        delete: (req, res) => {     
             lectureService
-                .delete(req.params.id)
-                .then(() => res.redirect(`/add-lecture/${req.params.id}`))
-                .catch((err) => errorService.handleError(err, '/'));  
+                .delete(req.params.courseId, req.params.lectureId)
+                .then(course => res.redirect(`/add-lecture/${req.params.courseId}`))
+                .catch(err => console.log(err));
+        },
+
+        play: (req, res) => {
+            lectureService
+                .getWithCourse(req.params.id)
+                .then(lecture => {
+                    courseService.getByIdWithLectures(lecture.course._id)
+                    .then(course => res.render('lectures/video', { lecture, course }))                    
+                })
+                .catch(err => console.log(err));
         }
     },
 

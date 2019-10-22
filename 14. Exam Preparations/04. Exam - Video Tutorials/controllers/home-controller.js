@@ -17,8 +17,9 @@ module.exports = {
         .catch(err => console.log(err));
       }
       else {
+        let { search } = req.query;
         courseService
-        .getAllPublic()
+        .getAllPublic(search)
         .then(courses => res.render('home/index', { courses }))
         .catch(err => console.log(err));
       }    
