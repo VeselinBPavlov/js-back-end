@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Projects Manager</title>
+    <link href="/css/site.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li><a href="/">Home</a></li>
+            {{#if currentUser}}
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/teams">Teams</a></li>
+                {{#if currentUser.isAdmin}}
+                <li><a href="/create-team">Create Team</a></li>
+                <li><a href="/create-project">Create Project</a></li>
+                {{/if}}
+            <div class="right">
+                <li>Welcome, {{currentUser.username}}!</li>
+                <li><a href="/profile/{{currentUser.userId}}">Profile</a></li>
+                <li>
+                    <form id="logout-form" action="/logout" method="GET"></form>
+                    <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+                </li>
+            </div>
+            {{else}}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {{/if}}           
+        </ul>
+    </header>
+            <main>
+                {{#if globalError}}
+                     <span>{{globalError}}</span> 
+                {{/if}} 
+                {{{body}}}
+            </main>
+    <footer>
+        Express Exam @SoftUni
+    </footer>
+</body>
+
+</html>
