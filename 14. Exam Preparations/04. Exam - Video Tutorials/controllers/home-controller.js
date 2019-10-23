@@ -1,5 +1,5 @@
 const courseService = require('../services/course-service');
-const errorHandler = require('../util/error-handler');
+const errorService = require('../services/error-service');
 
 module.exports = {
     index: (req, res) => {
@@ -8,20 +8,20 @@ module.exports = {
         courseService
           .getTopThree()
           .then(courses => res.render('home/index', { courses }))
-          .catch(err => console.log(err));
+          .catch(err => errorService.handleError(res, err, '/'));
       }
       else if(user.roles.includes('Admin')) {
         courseService
         .getAll()
         .then(courses => res.render('home/index', { courses }))
-        .catch(err => console.log(err));
+        .catch(err => errorService.handleError(res, err, '/'));
       }
       else {
         let { search } = req.query;
         courseService
         .getAllPublic(search)
         .then(courses => res.render('home/index', { courses }))
-        .catch(err => console.log(err));
+        .catch(err => errorService.handleError(res, err, '/'));
       }    
     }
 }

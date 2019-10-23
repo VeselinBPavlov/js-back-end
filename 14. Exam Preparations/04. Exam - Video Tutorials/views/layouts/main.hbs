@@ -40,9 +40,16 @@
                 </nav>
             </header>
             <main>
-                   {{#if globalError}}
-                        <span>{{globalError}}</span> 
-                   {{/if}} 
+                   <div id="notifications">
+                        <p id="notification-message">
+                    {{#if globalError}}
+                        <h3>{{globalError}}</h3>
+                    {{/if}}
+                    {{#if success}}
+                        <h3>{{success}}</h3>
+                    {{/if}}
+                        </p>
+                    </div>
                   {{{body}}}
             </main>
         <footer class="page-footer font-small">
