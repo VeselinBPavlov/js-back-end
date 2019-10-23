@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     username: { type: Types.String, required: true, unique: true },
     firstName: { type: Types.String, required: true },
     lastName: { type: Types.String, required: true },
-    imageUrl: { type: Types.String, default: 'https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png' },
+    imageUrl: { type: Types.String, default: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png' },
     hashedPass: { type: Types.String, required: true },
     salt: { type: Types.String, required: true },
     roles: [{ type: Types.String }],

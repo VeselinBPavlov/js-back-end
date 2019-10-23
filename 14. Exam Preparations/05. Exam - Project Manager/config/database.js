@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const User = require('../models/User');
+require('../models/Team');
+require('../models/Project');
 
 module.exports = config => {
     mongoose.connect(config.dbPath, {

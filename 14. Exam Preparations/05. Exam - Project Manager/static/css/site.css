@@ -254,3 +254,7 @@ div.profile-box {
     margin: 0 auto;
     height: 400px;
 }
+
+.leave {
+    display: inline-block;
+}
