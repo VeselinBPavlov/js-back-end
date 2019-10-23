@@ -1,5 +1,6 @@
 const teamService = require('../services/team-service');
 const userService = require('../services/user-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     get: {
@@ -16,7 +17,7 @@ module.exports = {
                     teamService
                         .getAll()
                         .then(teams => res.render('teams/teams', { users, teams }))
-                        .catch(err => console.log(err));
+                        .catch(err => errorService.handleError(res, err, 'teams/teams'));
                 })
                 .catch(err => console.log(err));         
             }
@@ -24,7 +25,7 @@ module.exports = {
                 teamService
                 .getTeamsWithProjectsAndMembers()
                 .then(teams => res.render('teams/teams', { teams }))
-                .catch(err => console.log(err));                      
+                .catch(err => errorService.handleError(res, err, 'teams/teams'));                      
             }               
         }
     },
@@ -34,7 +35,7 @@ module.exports = {
             teamService
                 .create(req.body.name)
                 .then(team => res.redirect('/teams'))
-                .catch(err => console.log(err));
+                .catch(err => errorService.handleError(res, err, 'teams/create'));
         },
 
         distribute: (req, res) => {
@@ -43,17 +44,17 @@ module.exports = {
                 .getById(userId)
                 .then(user => {
                     if (user.teams.includes(teamId)) {
-                        res.redirect('/teams');
-                        console.log('User already participate in this team!');
+                        const err = 'User already participate in this team!';
+                        errorService.handleError(res, err, 'teams/teams');
                         return;
                     }
 
                     userService
                         .distributeTeam(userId, teamId)
                         .then(() => res.redirect('/'))
-                        .catch(err => console.log(err));
+                        .catch(err => errorService.handleError(res, err, 'teams/teams'));
                 })
-                .catch(err => console.log(err));
+                .catch(err => errorService.handleError(res, err, 'teams/teams'));
         }        
     }
 }

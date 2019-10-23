@@ -1,6 +1,7 @@
 const encryption = require('../util/encryption');
 const userService = require('../services/user-service');
 const teamService = require('../services/team-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     get: {
@@ -28,7 +29,7 @@ module.exports = {
                             .then(team => {
                                 projects = [...projects,...team.projects];
                             })
-                            .catch(err => console.log(err));                            
+                            .catch(err => errorService.handleError(res, err, 'users/profile'));                           
                     });  
                     res.render('users/profile', { user, projects });                  
                 })
@@ -40,8 +41,8 @@ module.exports = {
         register: (req, res) => {
             const { username, firstName, lastName, imageUrl, password, repeatPassword} = req.body;
             if (password !== repeatPassword) {
-                res.locals.globalError = 'Passwords must match!';
-                res.render('users/register');
+                const err = 'Passwords must match!';
+                errorService.handleError(res, err, 'projects/projects');
                 return;
             }
             
@@ -53,18 +54,12 @@ module.exports = {
                 .then(user => {
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            console.log(e);
-                            res.locals.globalError = e;
-                            res.render('users/register');
+                            errorService.handleError(res, err, 'users/register'); 
                         } else {
                             res.redirect('/');
                         }
                     });
-                }).catch((err) => {
-                    console.log(err);
-                    res.locals.globalError = err;
-                    res.render('users/register');
-                });  
+                }).catch(err => errorService.handleError(res, err, 'users/register'));
         },
 
         login: (req, res) => {
@@ -75,25 +70,17 @@ module.exports = {
                 .then(user => {
                     if (!user || !user.authenticate(password)) {
                         const err = 'Invalid user data!'
-                        console.log(err);
-                        res.locals.globalError = err;
-                        res.render('users/register');
+                        errorService.handleError(res, err, 'users/register'); 
                         return;
                     }
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            console.log(err);
-                            res.locals.globalError = err;
-                            res.render('users/register');
+                            errorService.handleError(res, err, 'users/register'); 
                         } else {
                             res.redirect('/');
                         }
                     });
-                }).catch((err) => {
-                    console.log(err);
-                    res.locals.globalError = err;
-                    res.render('users/register');
-                });  
+                }).catch(err => errorService.handleError(res, err, 'users/register'));
         },
 
         leave: (req, res) => {
@@ -103,11 +90,7 @@ module.exports = {
             userService
                 .leaveTeam(userId, teamId)
                 .then(() => res.redirect(`/profile/${userId}`))
-                .catch((err) => {
-                    console.log(err);
-                    res.locals.globalError = err;
-                    res.render('users/register');
-                });  
+                .catch(err => errorService.handleError(res, err, 'users/profile')); 
         }
     }    
 };

@@ -1,5 +1,6 @@
 const teamService = require('../services/team-service');
 const projectService = require('../services/project-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     get: {
@@ -16,15 +17,15 @@ module.exports = {
                     projectService
                         .getAll()
                         .then(projects => res.render('projects/projects', { teams, projects }))
-                        .catch(err => console.log(err));
+                        .catch(err => errorService.handleError(res, err, 'projects/projects'));
                 })
-                .catch(err => console.log(err));          
+                .catch(err => errorService.handleError(res, err, 'projects/projects'));          
             }
             else {
                 projectService
                 .getAllWithTeams()
                 .then(projects => res.render('projects/projects', { projects }))
-                .catch(err => console.log(err));   
+                .catch(err => errorService.handleError(res, err, 'projects/projects')); 
             }              
         }
     },
@@ -34,7 +35,7 @@ module.exports = {
             projectService
                 .create(req.body.name, req.body.description)
                 .then(project => res.redirect('/projects'))
-                .catch(err => console.log(err));
+                .catch(err => errorService.handleError(res, err, 'projects/create'));
         },
 
         distribute: (req, res) => {
@@ -42,7 +43,7 @@ module.exports = {
             teamService
                 .distributeProject(teamId, projectId)
                 .then(() => res.redirect('/'))
-                .catch(err => console.log(err));
+                .catch(err => errorService.handleError(res, err, 'projects/projects'));
         } 
     }
 }
