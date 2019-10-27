@@ -1,0 +1,30 @@
+   <main>
+                     
+            {{> error }}
+        <section class="expense-report">
+
+            <h1>ID: {{expence._id}}</h1>
+            <div class="report-date">
+                <img src="/images/date.png" alt="">
+                <p>{{dateFormat expence.date format utc}}</p>
+            </div>
+
+            <div class="report-category">
+                <img src="/images/amount.png" alt="">
+                <p>{{expence.category}} - лв {{expence.total}}</p>
+            </div>
+
+            <div class="report-merchant">
+                <p>Car supplies</p>
+            </div>
+
+            <div class="report-description">
+                <img src="/images/hastag.png" alt="">
+                <p>{{expence.description}}</p>
+            </div>
+
+            <div class="report-action">
+                <a disabled href="/delete/{{expence._id}}">Stop tracking</a>
+            </div>
+        </section>
+    </main>
