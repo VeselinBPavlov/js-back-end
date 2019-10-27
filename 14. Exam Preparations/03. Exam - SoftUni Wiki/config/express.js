@@ -37,6 +37,4 @@ module.exports = app => {
     app.set('view engine', '.hbs');
 
     app.use(express.static('./static'));
-
-    console.log('Express ready!')
 };

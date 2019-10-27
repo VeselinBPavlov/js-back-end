@@ -1,44 +1,94 @@
 <main>
+
+    {{#if currentUser.isAdmin}}
+    <div class="row">
+        <div class="col text-center">
+            <a href="/create"><button type="button" class="btn btn-primary btn-lg">Create Course</button></a>
+        </div>
+    </div>
+
+    <div class="border border-light p-5">
+        <h1 class="text-center">Choose Course</h1>
+        <ul class="list-group">
+            {{#each courses}}
+            <li class="list-group-item">
+                {{title}}
+                <div class="float-right">
+                    <div class="btn-group" role="group">
+                        <a href="/edit/{{_id}}"><button type="button" class="btn btn-warning">Edit Course</button></a>
+                        <a href="/add-lecture/{{_id}}"><button type="button" class="btn btn-success">Add lectures</button></a>
+                    </div>
+                    Lectures in course
+                    <span class="badge badge-primary badge-pill">{{lectures.length}}</span>
+                </div>
+            </li>
+            {{else}}
+            <h2>No courses in the database. Please, create one!</h2>
+            {{/each}}
+        </ul>
+    </div>
+    {{else}}
+
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Video Tutorials</h1>
             <p class="lead">Start Self-Study Today: It'll Change Your Life</p>
         </div>
     </div>
-    <div>
-        <h1 class="text-center">Top Courses</h1>
+    
+        {{#if currentUser}}   
+        <h1 class="text-center">Courses</h1>
+
+        <form class="search" style="text-align: center;" action="" method="">
+            <label>Search: </label>
+            <input type="text" name="search">
+            <input type="submit" value="Search">
+        </form>
+
         <div class="container mt-3">
-            <div class="row d-flex justify-content-center">
-                <div class="card-deck">
+            <div class="row ">
+                <div class="card-deck d-flex justify-content-center">
+
+                    {{#each courses}}
                     <div class="card mb-4">
-                        <img class="card-img-top"
-                            src="https://cdn-images-1.medium.com/max/1000/1*alZcSIb0lcN7gQIx2tJ_tg.png"
-                            alt="Card image cap" width="400">
+                        <img class="card-img-top" src="{{imageUrl}}" alt="Card image cap" width="400">
                         <div class="card-body">
-                            <h4 class="card-title">Express</h4>
-                            <p class="card-text">Lorem Ipsum</p>
+                            <h4 class="card-title">{{title}}</h4>
+                            <p class="card-text">{{description}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/details/{{_id}}"><button type="button" class="btn btn-info">Details</button></a>
                         </div>
                     </div>
+                    {{/each}}                    
+
+                </div>
+            </div>
+        </div>   
+
+        {{else}}
+        <div>
+            <h1 class="text-center">Top Courses</h1>
+            <div class="container mt-3">
+                <div class="row d-flex justify-content-center">
+                    <div class="card-deck">
+
+                    {{#each courses}}
                     <div class="card mb-4">
-                        <img class="card-img-top"
-                            src="https://cdn-images-1.medium.com/max/1200/1*3SVfBkNZI2f-sspiq59xcw.png"
-                            alt="Card image cap" width="400">
+                        <img class="card-img-top" src="{{imageUrl}}" alt="Card image cap" width="400">
                         <div class="card-body">
-                            <h4 class="card-title">React</h4>
-                            <p class="card-text">Lorem Ipsum</p>
+                            <h4 class="card-title">{{title}}</h4>
+                            <p class="card-text">{{description}}</p>
                         </div>
                     </div>
-                    <div class="card mb-4">
-                        <img class="card-img-top"
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/250px-Angular_full_color_logo.svg.png"
-                            alt="Card image cap" width="400">
-                        <div class="card-body">
-                            <h4 class="card-title">Angular</h4>
-                            <p class="card-text">Lorem Ipsum</p>
-                        </div>
+                    {{/each}}           
+                    
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        {{/if}}
+        
+    {{/if}}
+    
 </main>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Node.js Tempalte</title>
+    <title>Video Tutorials</title>
     <link rel="stylesheet" href="/css/site.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -21,7 +21,7 @@
                         </li>
                         {{#if currentUser}}
                         <li class="nav-link">
-                            Welcome, {{username}}
+                            Welcome, {{currentUser.username}}
                          </li>
                         <li class="nav-item">
                             <form id="logout-form" action="/logout" method="GET"></form>
@@ -40,9 +40,16 @@
                 </nav>
             </header>
             <main>
-                   {{#if globalError}}
-                        <span>{{globalError}}</span> 
-                   {{/if}} 
+                   <div id="notifications">
+                        <p id="notification-message">
+                    {{#if globalError}}
+                        <h3>{{globalError}}</h3>
+                    {{/if}}
+                    {{#if success}}
+                        <h3>{{success}}</h3>
+                    {{/if}}
+                        </p>
+                    </div>
                   {{{body}}}
             </main>
         <footer class="page-footer font-small">
