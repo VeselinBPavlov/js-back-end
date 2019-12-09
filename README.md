@@ -14,3 +14,6 @@
 05. Session and Authentication
 06. Validation and Error Handling
 07. REST API
+
+## Certificate: 
+<img src="certificate.jpeg"/>
